@@ -10,6 +10,7 @@ import { FaQuoteLeft } from 'react-icons/fa';
 
 const menus = [
   { label: 'Dashboard', path: '/admin', icon: MdDashboard, exact: true },
+  { label: 'Users', path: '/admin/users', icon: MdSecurity },
   { label: 'Products', path: '/admin/products', icon: MdInventory },
   { label: 'Services', path: '/admin/services', icon: MdMiscellaneousServices },
   { label: 'Achievements', path: '/admin/achievements', icon: MdEmojiEvents },

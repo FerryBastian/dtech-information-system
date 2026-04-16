@@ -2,13 +2,21 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/shared/ProtectedRoute';
+import UserLayout from './components/user/UserLayout';
 
 // User pages
-import Home from './pages/user/Home';
+import HomePage from './pages/user/HomePage';
+import AboutPage from './pages/user/AboutPage';
+import ProductsPage from './pages/user/ProductsPage';
+import ServicesPage from './pages/user/ServicesPage';
+import InnovationsPage from './pages/user/InnovationsPage';
+import TestimonialPage from './pages/user/TestimonialPage';
+import ContactPage from './pages/user/ContactPage';
 
 // Admin pages
 import AdminLogin from './pages/admin/AdminLogin';
 import Dashboard from './pages/admin/Dashboard';
+import Users from './pages/admin/Users';
 import Products from './pages/admin/Products';
 import Services from './pages/admin/Services';
 import Achievements from './pages/admin/Achievements';
@@ -29,14 +37,23 @@ function App() {
           style: { background: '#161b27', color: '#e8ecf4', border: '1px solid #2a3348', fontSize: '13px' },
         }} />
         <Routes>
-          {/* User */}
-          <Route path="/" element={<Home />} />
+          {/* User Routes (with Navbar + Footer) */}
+          <Route element={<UserLayout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/innovations" element={<InnovationsPage />} />
+            <Route path="/testimonial" element={<TestimonialPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+          </Route>
 
           {/* Admin Auth */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Admin Protected */}
           <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><Users /></AdminRoute>} />
           <Route path="/admin/products" element={<AdminRoute><Products /></AdminRoute>} />
           <Route path="/admin/services" element={<AdminRoute><Services /></AdminRoute>} />
           <Route path="/admin/achievements" element={<AdminRoute><Achievements /></AdminRoute>} />

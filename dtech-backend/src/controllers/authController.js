@@ -131,4 +131,86 @@ const changePassword = async (req, res) => {
   }
 };
 
-module.exports = { login, getMe, register, changePassword };
+// PUT /api/auth/profile (update own profile)
+const updateProfile = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+    if (!username || !email) {
+      return res.status(400).json({ success: false, message: 'Username dan email wajib diisi' });
+    }
+
+    const [existing] = await pool.query(
+      'SELECT id FROM admin_users WHERE email = ? AND id != ?', [email, req.user.id]
+    );
+    if (existing.length > 0) {
+      return res.status(400).json({ success: false, message: 'Email sudah digunakan' });
+    }
+
+    await pool.query(
+      'UPDATE admin_users SET username = ?, email = ? WHERE id = ?', [username, email, req.user.id]
+    );
+
+    res.json({ success: true, message: 'Profile berhasil diperbarui' });
+  } catch (error) {
+    console.error('UpdateProfile error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// GET /api/users (admin only - get all users)
+const getAllUsers = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT id, username, email, role, created_at FROM admin_users ORDER BY created_at DESC'
+    );
+    res.json({ success: true, data: rows });
+  } catch (error) {
+    console.error('GetAllUsers error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// DELETE /api/users/:id (admin only)
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (parseInt(id) === req.user.id) {
+      return res.status(400).json({ success: false, message: 'Tidak bisa menghapus akun sendiri' });
+    }
+    const [result] = await pool.query('DELETE FROM admin_users WHERE id = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: 'User tidak ditemukan' });
+    }
+    res.json({ success: true, message: 'User berhasil dihapus' });
+  } catch (error) {
+    console.error('DeleteUser error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// PUT /api/users/:id (admin only)
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, email, role } = req.body;
+    if (!username || !email || !role) {
+      return res.status(400).json({ success: false, message: 'Semua field wajib diisi' });
+    }
+    const [existing] = await pool.query(
+      'SELECT id FROM admin_users WHERE email = ? AND id != ?', [email, id]
+    );
+    if (existing.length > 0) {
+      return res.status(400).json({ success: false, message: 'Email sudah digunakan user lain' });
+    }
+    await pool.query(
+      'UPDATE admin_users SET username = ?, email = ?, role = ? WHERE id = ?',
+      [username, email, role, id]
+    );
+    res.json({ success: true, message: 'User berhasil diperbarui' });
+  } catch (error) {
+    console.error('UpdateUser error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+module.exports = { login, getMe, register, changePassword, updateProfile, getAllUsers, deleteUser, updateUser };

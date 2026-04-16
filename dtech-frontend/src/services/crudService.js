@@ -8,6 +8,14 @@ const makeService = (endpoint) => ({
   remove: (id) => api.delete(`/${endpoint}/${id}`).then(r => r.data),
 });
 
+export const usersService = {
+  getAll: () => api.get('/auth/users').then(r => r.data),
+  getById: (id) => api.get(`/auth/users/${id}`).then(r => r.data),
+  create: (data) => api.post('/auth/register', data).then(r => r.data),
+  update: (id, data) => api.put(`/auth/users/${id}`, data).then(r => r.data),
+  remove: (id) => api.delete(`/auth/users/${id}`).then(r => r.data),
+};
+
 export const achievementsService = {
   ...makeService('achievements'),
   addImage: (id, formData) => api.post(`/achievements/${id}/images`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data),

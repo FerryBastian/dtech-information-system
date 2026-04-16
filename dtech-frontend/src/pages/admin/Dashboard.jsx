@@ -4,12 +4,13 @@ import { useAuth } from '../../context/AuthContext';
 import { NavLink } from 'react-router-dom';
 import {
   MdInventory, MdMiscellaneousServices, MdEmojiEvents, MdPhotoLibrary,
-  MdVerified, MdPeople, MdNewspaper, MdEmail, MdArrowForward
+  MdVerified, MdPeople, MdNewspaper, MdEmail, MdArrowForward, MdSecurity
 } from 'react-icons/md';
 import { FaQuoteLeft } from 'react-icons/fa';
 import api from '../../services/api';
 
 const cards = [
+  { label: 'Users', endpoint: 'auth/users', icon: MdSecurity, color: 'cyan', path: '/admin/users' },
   { label: 'Products', endpoint: 'products', icon: MdInventory, color: 'blue', path: '/admin/products' },
   { label: 'Services', endpoint: 'services', icon: MdMiscellaneousServices, color: 'purple', path: '/admin/services' },
   { label: 'Achievements', endpoint: 'achievements', icon: MdEmojiEvents, color: 'yellow', path: '/admin/achievements' },

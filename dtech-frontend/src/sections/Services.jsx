@@ -1,77 +1,81 @@
-import { useState, useEffect } from 'react'
-import { servicesService } from '../services/crudService'
+import { useState } from 'react'
+import PageHero from './PageHero'
 
-const Services = () => {
-  const [services, setServices] = useState([])
-  const [loading, setLoading] = useState(true)
+const servicesData = [
+  {
+    title: 'DESIGN & ENGINEERING',
+    img: 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=800&q=80',
+    items: ['3D parametric CAD design', '2D detail manufacturing drawing', 'Plastic part design', 'Injection mold design', 'Sheet metal design', 'Structural design'],
+  },
+  {
+    title: 'PRODUCT DEVELOPMENT',
+    img: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+    items: ['Concept Design', '3D interactive animation', '3D photorealistic rendering', 'Market research'],
+  },
+  {
+    title: 'ENGINEERING ANALYSIS',
+    img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80',
+    items: ['Structural analysis', 'FEA (Finite Element Analysis)', 'CFD & flow analysis', 'Thermal analysis', 'Energy Conversion Analysis', 'Mold analysis'],
+  },
+  {
+    title: 'PROTOTYPING SERVICE',
+    img: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=800&q=80',
+    items: ['CNC machining', '3D printing', 'Scale model development', 'Composite prototyping', 'Small run manufacturing'],
+  },
+]
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const result = await servicesService.getAll()
-        if (result.success && result.data.length > 0) {
-          setServices(result.data)
-        } else {
-          setServices([
-            { number: '01', title: 'Design Engineering', desc: 'Comprehensive design engineering services from concept to final product, leveraging advanced CAD/CAM tools and engineering analysis software.' },
-            { number: '02', title: 'Product Development', desc: 'End-to-end product development encompassing ideation, design, prototyping, testing, and mass production support for diverse industries.' },
-            { number: '03', title: 'Engineering Analysis', desc: 'Advanced finite element analysis (FEA), computational fluid dynamics (CFD), and structural simulations to optimize product performance.' },
-            { number: '04', title: 'Prototyping Service', desc: 'Rapid prototyping using CNC machining, 3D printing, and traditional manufacturing methods to quickly validate and refine designs.' },
-          ])
-        }
-      } catch (err) {
-        setServices([
-          { number: '01', title: 'Design Engineering', desc: 'Comprehensive design engineering services from concept to final product, leveraging advanced CAD/CAM tools and engineering analysis software.' },
-          { number: '02', title: 'Product Development', desc: 'End-to-end product development encompassing ideation, design, prototyping, testing, and mass production support for diverse industries.' },
-          { number: '03', title: 'Engineering Analysis', desc: 'Advanced finite element analysis (FEA), computational fluid dynamics (CFD), and structural simulations to optimize product performance.' },
-          { number: '04', title: 'Prototyping Service', desc: 'Rapid prototyping using CNC machining, 3D printing, and traditional manufacturing methods to quickly validate and refine designs.' },
-        ])
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchServices()
-  }, [])
+const ServiceRow = ({ services }) => (
+  <>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }} className="services-page-grid">
+      {services.map((service) => (
+        <div key={service.title} style={{ aspectRatio: '4/3', backgroundImage: `url(${service.img})`, backgroundSize: 'cover', backgroundPosition: 'center', borderRadius: '6px' }} />
+      ))}
+    </div>
 
-  const displayServices = services.length > 0 ? services.map((s, i) => ({
-    number: String(i + 1).padStart(2, '0'),
-    title: s.title,
-    desc: s.short_desc || s.description || '',
-  })) : [
-    { number: '01', title: 'Design Engineering', desc: 'Comprehensive design engineering services from concept to final product, leveraging advanced CAD/CAM tools and engineering analysis software.' },
-    { number: '02', title: 'Product Development', desc: 'End-to-end product development encompassing ideation, design, prototyping, testing, and mass production support for diverse industries.' },
-    { number: '03', title: 'Engineering Analysis', desc: 'Advanced finite element analysis (FEA), computational fluid dynamics (CFD), and structural simulations to optimize product performance.' },
-    { number: '04', title: 'Prototyping Service', desc: 'Rapid prototyping using CNC machining, 3D printing, and traditional manufacturing methods to quickly validate and refine designs.' },
-  ]
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginTop: '28px', marginBottom: '56px' }} className="services-page-grid">
+      {services.map((service) => (
+        <div key={service.title} style={{ padding: '0 8px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#fff', letterSpacing: '0.14em', textAlign: 'center', marginBottom: '20px' }}>{service.title}</h2>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {service.items.map((item) => (
+              <li key={item} style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', lineHeight: 2, paddingLeft: '14px', position: 'relative' }}>
+                <span style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', width: '5px', height: '5px', borderRadius: '50%', background: 'rgba(255,255,255,0.5)' }} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </>
+)
+
+const Services = ({ variant = 'page' }) => {
+  const [list] = useState(servicesData)
 
   return (
-    <section id="services" style={{ background: '#111', padding: '6rem 6vw' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-          <div style={{ width: '2px', height: '40px', background: '#00b4d8' }} />
-          <span style={{ fontFamily: 'Rajdhani', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', color: '#00b4d8' }}>WHAT WE OFFER</span>
-        </div>
-        <h2 style={{ fontFamily: 'Barlow Condensed', fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 800, color: '#fff', marginBottom: '3rem' }}>Our <span style={{ color: '#00b4d8' }}>Services</span></h2>
+    <section style={{ fontFamily: "'Open Sans', sans-serif", background: '#000', color: '#fff', paddingTop: variant === 'page' ? '64px' : 0 }}>
+      {variant === 'page' ? (
+        <PageHero
+          image="https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=1600&q=80"
+          title="Our Services"
+          subtitle="We are experienced team with more than 9 years experience. We always committed to providing high-quality design work, prompt communication, and detailed documentation of the project."
+          height="calc(100vh - 64px)"
+          backgroundPosition="center 30%"
+          filter="brightness(0.28) grayscale(20%)"
+        />
+      ) : null}
 
-        {loading ? (
-          <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', padding: '2rem' }}>Loading...</div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5px', background: 'rgba(255,255,255,0.06)' }} className="svc-grid">
-            {displayServices.map((s, i) => (
-              <div key={i} style={{ background: '#111', padding: '3rem', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,180,216,0.05)'}
-                onMouseLeave={e => e.currentTarget.style.background = '#111'}>
-                <div style={{ position: 'absolute', top: '1rem', right: '2rem', fontFamily: 'Barlow Condensed', fontSize: '5rem', fontWeight: 900, color: 'rgba(0,180,216,0.04)', lineHeight: 1 }}>{s.number}</div>
-                <div style={{ fontFamily: 'Rajdhani', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', color: '#00b4d8', marginBottom: '0.5rem' }}>{s.number}</div>
-                <h3 style={{ fontFamily: 'Barlow Condensed', fontSize: '1.4rem', fontWeight: 700, letterSpacing: '0.04em', color: '#fff', marginBottom: '1rem', textTransform: 'uppercase' }}>{s.title}</h3>
-                <p style={{ fontSize: '0.88rem', fontWeight: 300, lineHeight: 1.8, color: 'rgba(255,255,255,0.6)' }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <style>{`@media(max-width:700px){.svc-grid{grid-template-columns:1fr!important}}`}</style>
+      <section style={{ background: '#000', padding: '60px 80px 80px' }}>
+        <div style={{ maxWidth: '860px', margin: '0 auto' }}>
+          <ServiceRow services={list.slice(0, 2)} />
+          <ServiceRow services={list.slice(2, 4)} />
+        </div>
+      </section>
+
+      <style>{`@media(max-width:700px){.services-page-grid{grid-template-columns:1fr!important}}`}</style>
     </section>
   )
 }
+
 export default Services

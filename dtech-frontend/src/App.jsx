@@ -15,7 +15,8 @@ import ContactPage from './pages/user/ContactPage';
 import PortfolioPage from './pages/user/PortfolioPage';
 import PortfolioDetailPage from './pages/user/PortfolioDetailPage';
 import CertificatePage from './pages/user/CertificatePage';
-
+import LegalityPage from './pages/user/LegalityPage';
+import HistoryPage from './pages/user/HistoryPage';
 
 // Admin pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -53,6 +54,8 @@ function App() {
             <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/portfolio/:id" element={<PortfolioDetailPage />} />
             <Route path="/certificates" element={<CertificatePage />} />
+            <Route path="/legality" element={<LegalityPage />} />
+            <Route path="/history" element={<HistoryPage />} />
           </Route>
 
           {/* Admin Auth */}

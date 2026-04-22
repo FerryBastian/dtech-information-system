@@ -5,7 +5,14 @@ import logoImg from '/logo.png'
 const navItems = [
   {
     label: 'About', path: '/about',
-    dropdown: ['History', 'Corporate Profile', 'Global Achievement', 'Portfolio', 'Patents', 'Legality Certificate']
+    dropdown: [
+      { label: 'History', path: '/history' },
+      { label: 'Corporate Profile', path: '/about' },
+      { label: 'Global Achievement', path: '/achievements' },
+      { label: 'Portfolio', path: '/portfolio' },
+      { label: 'Patents', path: '/certificates' },
+      { label: 'Legality Certificate', path: '/legality' },
+    ]
   },
   {
     label: 'Products', path: '/products',
@@ -17,14 +24,16 @@ const navItems = [
   },
   {
     label: 'Services', path: '/services',
-    dropdown: ['Design Engineering', 'Product Development', 'Engineering Analysis', 'Prototyping Service']
+    dropdown: [
+      { label: 'Design Engineering', path: '/services' },
+      { label: 'Product Development', path: '/services' },
+      { label: 'Engineering Analysis', path: '/services' },
+      { label: 'Prototyping Service', path: '/services' },
+    ]
   },
   { label: 'Innovations', path: '/innovations' },
   { label: 'Testimonial', path: '/testimonial' },
-  {
-    label: 'Contact', path: '/contact',
-    dropdown: ['Contact Us', 'Support']
-  },
+  { label: 'Contact', path: '/contact' },
 ]
 
 const Navbar = () => {
@@ -152,8 +161,8 @@ const Navbar = () => {
                     </div>
                   ) : (
                     item.dropdown.map((subItem) => (
-                      <div key={subItem}
-                        onClick={() => goTo(item.path)}
+                      <div key={subItem.label}
+                        onClick={() => goTo(subItem.path)}
                         style={{
                           padding: '0.6rem 1.5rem',
                           fontFamily: 'Barlow Condensed', fontSize: '0.9rem',
@@ -174,7 +183,7 @@ const Navbar = () => {
                           e.currentTarget.style.paddingLeft = '1.5rem'
                           e.currentTarget.style.background = 'transparent'
                         }}
-                      >{subItem}</div>
+                      >{subItem.label}</div>
                     ))
                   )}
                 </div>
@@ -227,7 +236,7 @@ const Navbar = () => {
                       <div key={sub} onClick={() => goTo('/products')} style={{ padding: '0.35rem 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', fontFamily: 'Barlow Condensed', letterSpacing: '0.04em', cursor: 'pointer' }}>— {sub}</div>
                     ))
                     : item.dropdown.map(sub => (
-                      <div key={sub} onClick={() => goTo(item.path)} style={{ padding: '0.35rem 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', fontFamily: 'Barlow Condensed', letterSpacing: '0.04em', cursor: 'pointer' }}>— {sub}</div>
+                      <div key={sub.label} onClick={() => goTo(sub.path)} style={{ padding: '0.35rem 0', fontSize: '0.82rem', color: 'rgba(255,255,255,0.5)', fontFamily: 'Barlow Condensed', letterSpacing: '0.04em', cursor: 'pointer' }}>— {sub.label}</div>
                     ))
                   }
                 </div>

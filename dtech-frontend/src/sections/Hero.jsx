@@ -2,86 +2,133 @@ import { useState, useEffect } from 'react'
 
 const slides = [
   {
-    bg: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1600&q=80',
+    bg: '/AboutCompany.jpg',
     title: '"Redefine Technology"',
     subtitle: 'DTECH-ENGINEERING is a research and technology company established in 2009, focusing on mechanical engineering, manufacturing, and research-driven product development.',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1565043589221-1a6fd9ae45c7?w=1600&q=80',
+    bg: '/Supermill1.png',
     title: 'SUPERMILL MK 2.0',
     subtitle: 'Next-generation successor to the SEMAR-T CNC, with a strong emphasis on being more compact and designed for heavy-duty usage.',
   },
   {
-    bg: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80',
-    title: 'ULTRALIGHT AIRCRAFT',
-    subtitle: 'A next-generation ultralight aircraft designed for maximum efficiency, precise maneuverability, and internationally certified safety standards.',
+    bg: '/GA2.png',
+    title: 'GLOBAL ACHIEVEMENT',
+    subtitle: 'Trusted by 47 of the best research institutions worldwide. 1st Place GE & FUSE On-Wing Jet Engine Inspection Design Challenge.',
+  },
+  {
+    bg: '/Trainseat1.jpg',
+    title: 'TRAIN SEAT',
+    subtitle: "DTECH-ENGINEERING pioneered the domestic production of train seat components to reduce the Indonesian railway industry's dependence on imports.",
   },
 ]
 
 const Hero = () => {
   const [current, setCurrent] = useState(0)
-  const [fade, setFade] = useState(true)
+  const [nextIndex, setNextIndex] = useState(null)
+  const [bgFade, setBgFade] = useState(true)   // kontrol fade gambar
+  const [txtFade, setTxtFade] = useState(true) // kontrol fade teks
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setFade(false)
-      setTimeout(() => { setCurrent(prev => (prev + 1) % slides.length); setFade(true) }, 400)
-    }, 5000)
+    const timer = setInterval(() => triggerSlide((current + 1) % slides.length), 5500)
     return () => clearInterval(timer)
-  }, [])
+  }, [current])
+
+  const triggerSlide = (i) => {
+    if (i === current) return
+    setNextIndex(i)
+
+    // 1. Teks fade out dulu
+    setTxtFade(false)
+
+    // 2. Setelah teks hilang, ganti gambar dengan crossfade
+    setTimeout(() => {
+      setBgFade(false)
+      setTimeout(() => {
+        setCurrent(i)
+        setNextIndex(null)
+        setBgFade(true)
+        // 3. Teks fade in setelah gambar muncul
+        setTimeout(() => setTxtFade(true), 200)
+      }, 500)
+    }, 300)
+  }
+
+  const goTo = (i) => { if (i !== current) triggerSlide(i) }
 
   const slide = slides[current]
 
   return (
-    <section id="home" style={{ position: 'relative', height: '100vh', overflow: 'hidden', background: '#000' }}>
+    <section id="home" style={{ position: 'relative', height: '100vh', minHeight: '520px', overflow: 'hidden', background: '#000' }}>
+
+      {/* Background image — crossfade */}
       <div style={{
         position: 'absolute', inset: 0,
         backgroundImage: `url(${slide.bg})`,
         backgroundSize: 'cover', backgroundPosition: 'center',
-        opacity: fade ? 0.45 : 0, transition: 'opacity 0.6s ease',
+        opacity: bgFade ? 1 : 0,
+        transition: 'opacity 0.7s ease',
+        filter: 'brightness(0.5)',
       }} />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 60%, rgba(0,0,0,0.95) 100%)' }} />
 
+      {/* Gradient overlay */}
       <div style={{
-        position: 'relative', zIndex: 2, height: '100%',
-        display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
-        padding: '0 6vw 8vh', maxWidth: '900px',
-        opacity: fade ? 1 : 0, transition: 'opacity 0.5s ease',
-      }}>
-        <div style={{ fontFamily: 'Rajdhani', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.3em', color: '#00b4d8', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ width: '30px', height: '1px', background: '#00b4d8' }} />
-          PT DTECH INOVASI INDONESIA
-        </div>
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.05) 60%, rgba(0,0,0,0.65) 100%)',
+        zIndex: 1,
+      }} />
 
-        <h1 style={{ fontFamily: 'Barlow Condensed', fontSize: 'clamp(2.5rem, 6vw, 5rem)', fontWeight: 800, color: '#fff', marginBottom: '1.25rem', lineHeight: 1.05 }}>
+      {/* Blue line bottom */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(to right, transparent, #00b4d8, transparent)', zIndex: 4 }} />
+
+      {/* Center content — teks punya fade sendiri */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 2,
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        textAlign: 'center', padding: '0 6vw',
+        opacity: txtFade ? 1 : 0,
+        transition: 'opacity 0.4s ease',
+      }}>
+        <h1 style={{
+          fontFamily: 'Barlow Condensed',
+          fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
+          fontWeight: 800, color: '#fff',
+          letterSpacing: '0.03em', lineHeight: 1.05,
+          marginBottom: '1.25rem',
+          textShadow: '0 2px 24px rgba(0,0,0,0.7)',
+          maxWidth: '900px',
+          transform: txtFade ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'opacity 0.4s ease, transform 0.4s ease',
+        }}>
           {slide.title}
         </h1>
-
-        <p style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)', fontWeight: 300, color: 'rgba(255,255,255,0.8)', maxWidth: '560px', lineHeight: 1.7, marginBottom: '2.5rem' }}>
+        <p style={{
+          fontSize: 'clamp(0.85rem, 1.4vw, 1.05rem)',
+          fontWeight: 400, color: 'rgba(255,255,255,0.88)',
+          maxWidth: '640px', lineHeight: 1.75,
+          textShadow: '0 1px 8px rgba(0,0,0,0.8)',
+          transform: txtFade ? 'translateY(0)' : 'translateY(8px)',
+          transition: 'opacity 0.4s ease, transform 0.4s ease',
+        }}>
           {slide.subtitle}
         </p>
-
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button onClick={() => document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' })}
-            style={{ padding: '0.75rem 2rem', background: '#00b4d8', color: '#000', fontFamily: 'Rajdhani', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.12em', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-            LEARN MORE
-          </button>
-          <button onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            style={{ padding: '0.75rem 2rem', background: 'transparent', color: '#fff', fontFamily: 'Rajdhani', fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.12em', border: '1px solid rgba(255,255,255,0.4)', borderRadius: '4px', cursor: 'pointer' }}>
-            CONTACT US
-          </button>
-        </div>
       </div>
 
       {/* Slide dots */}
-      <div style={{ position: 'absolute', bottom: '2.5rem', right: '6vw', display: 'flex', gap: '8px', zIndex: 3 }}>
+      <div style={{
+        position: 'absolute', bottom: '2.25rem', left: 0, right: 0,
+        display: 'flex', justifyContent: 'center', gap: '8px', zIndex: 3,
+      }}>
         {slides.map((_, i) => (
-          <button key={i} onClick={() => { setFade(false); setTimeout(() => { setCurrent(i); setFade(true) }, 300) }}
-            style={{ width: i === current ? '24px' : '6px', height: '6px', borderRadius: '3px', background: i === current ? '#00b4d8' : 'rgba(255,255,255,0.3)', border: 'none', cursor: 'pointer', transition: 'all 0.3s', padding: 0 }} />
+          <button key={i} onClick={() => goTo(i)} style={{
+            width: i === current ? '28px' : '8px', height: '8px',
+            borderRadius: '4px', padding: 0, border: 'none', cursor: 'pointer',
+            background: i === current ? '#00b4d8' : 'rgba(255,255,255,0.35)',
+            transition: 'all 0.35s ease',
+          }} />
         ))}
       </div>
-
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(to right, transparent, #00b4d8, transparent)' }} />
     </section>
   )
 }

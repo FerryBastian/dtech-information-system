@@ -1,36 +1,78 @@
-const Footer = () => (
-  <footer style={{ background: '#1a1a1a', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '3rem 6vw 2rem' }}>
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '3rem', marginBottom: '2.5rem' }} className="foot-grid">
+const Footer = () => {
+  return (
+    <footer style={{ background: '#111418', borderTop: '1px solid rgba(0,180,216,0.15)', padding: '3rem 6vw' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '3rem', alignItems: 'start' }} className="footer-grid">
+
+        {/* Left: Company info */}
         <div>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: '1.1rem', fontWeight: 800, color: '#fff', marginBottom: '0.75rem' }}>PT DTECH INOVASI INDONESIA</div>
-          <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>Jl Nusantara 18 Canden<br />Salatiga, Indonesia 50742</div>
-        </div>
-        <div>
-          <div style={{ fontFamily: 'Rajdhani', fontSize: '0.68rem', fontWeight: 700, color: '#00b4d8', letterSpacing: '0.2em', marginBottom: '1rem', textTransform: 'uppercase' }}>Contact</div>
-          <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', lineHeight: 2 }}>
-            <div>Email: support@dtech-engineering.com</div>
-            <div>Phone: (+62) 298 343 0015</div>
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontFamily: 'Barlow Condensed', fontSize: '1rem', fontWeight: 800, color: 'rgba(255,255,255,0.9)', letterSpacing: '0.04em' }}>
+              PT DTECH INOVASI INDONESIA
+            </div>
+          </div>
+          <div style={{ fontFamily: 'Rajdhani', fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.8, fontWeight: 500 }}>
+            Jl Nusantara 18 Canden<br />
+            Salatiga, Indonesia 50742
           </div>
         </div>
+
+        {/* Center: Contact */}
         <div>
-          <div style={{ fontFamily: 'Rajdhani', fontSize: '0.68rem', fontWeight: 700, color: '#00b4d8', letterSpacing: '0.2em', marginBottom: '1rem', textTransform: 'uppercase' }}>Follow Us Now</div>
-          <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.4)', marginBottom: '0.75rem' }}>social media</div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            {['IG', 'YT'].map(s => (
-              <button key={s} style={{ width: '38px', height: '38px', background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontFamily: 'Rajdhani', fontSize: '0.68rem', fontWeight: 700, borderRadius: '4px', cursor: 'pointer' }}>{s}</button>
-            ))}
+          <div style={{ fontFamily: 'Rajdhani', fontSize: '0.78rem', color: 'rgba(255,255,255,0.55)', lineHeight: 2, fontWeight: 500 }}>
+            <div>Email: <a href="mailto:support@dtech-engineering.com" style={{ color: 'rgba(0,180,216,0.8)', textDecoration: 'none' }}>support@dtech-engineering.com</a></div>
+            <div>Phone: <a href="tel:+622983430015" style={{ color: 'rgba(0,180,216,0.8)', textDecoration: 'none' }}>(+62) 298 343 0015</a></div>
+          </div>
+        </div>
+
+        {/* Right: Social */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <div style={{ fontFamily: 'Rajdhani', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.45)', marginBottom: '0.75rem', textTransform: 'uppercase' }}>
+            Follow us now<br />social media
+          </div>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            {/* Instagram */}
+            <a href="#" style={{
+              width: '36px', height: '36px', borderRadius: '8px',
+              border: '1px solid rgba(255,255,255,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '1rem',
+              transition: 'all 0.2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#00b4d8'; e.currentTarget.style.color = '#00b4d8' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
+            {/* YouTube */}
+            <a href="#" style={{
+              width: '36px', height: '36px', borderRadius: '8px',
+              border: '1px solid rgba(255,255,255,0.15)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'rgba(255,255,255,0.6)', textDecoration: 'none', fontSize: '1rem',
+              transition: 'all 0.2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#00b4d8'; e.currentTarget.style.color = '#00b4d8' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.6)' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
 
-      <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', marginBottom: '1.5rem' }} />
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.25)' }}>© {new Date().getFullYear()} PT Dtech Inovasi Indonesia. All rights reserved.</div>
-        <div style={{ fontFamily: 'Barlow Condensed', fontSize: '0.78rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.2)' }}>DTECH-ENGINEERING | REDEFINE TECHNOLOGY</div>
-      </div>
-    </div>
-    <style>{`@media(max-width:640px){.foot-grid{grid-template-columns:1fr!important}}`}</style>
-  </footer>
-)
+      <style>{`
+        @media(max-width:768px){.footer-grid{grid-template-columns:1fr!important; gap:1.5rem!important}}
+        @media(max-width:768px){.footer-grid > div:last-child{align-items:flex-start!important}}
+      `}</style>
+    </footer>
+  )
+}
+
 export default Footer

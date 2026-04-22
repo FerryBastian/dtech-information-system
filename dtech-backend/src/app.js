@@ -5,9 +5,16 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
+const allowedOrigins = (process.env.CLIENT_URL || '').split(',').map(o => o.trim());
+
+
+
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+app.use(cors({
+  origin: allowedOrigins.length ? allowedOrigins : '*',
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));

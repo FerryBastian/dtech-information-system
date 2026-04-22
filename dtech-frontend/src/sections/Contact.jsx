@@ -60,6 +60,9 @@ const Contact = () => {
       >
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.8 }}>
+            PT DTECH INOVASI INDONESIA
+            <br/>
+
             Jl Nusantara 18 Canden
             <br />
             Salatiga, Indonesia 50742

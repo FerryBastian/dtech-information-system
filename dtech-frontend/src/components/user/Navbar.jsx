@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import logoImg from '/logo.png'
 
 const navItems = [
   {
@@ -40,7 +41,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Tutup menu saat pindah halaman
   useEffect(() => {
     setMenuOpen(false)
     setOpenDropdown(null)
@@ -73,13 +73,16 @@ const Navbar = () => {
       }}>
 
         {/* Logo */}
-        <div onClick={goHome} style={{ lineHeight: 1, cursor: 'pointer' }}>
-          <div style={{ fontFamily: 'Barlow Condensed', fontSize: '1.2rem', fontWeight: 800, color: '#fff' }}>
-            DTECH-EN<span style={{ color: '#00b4d8' }}>GI</span>NEER<span style={{ color: '#00b4d8' }}>IN</span>G
-          </div>
-          <div style={{ fontSize: '0.5rem', letterSpacing: '0.22em', color: '#888', marginTop: '2px', fontFamily: 'Rajdhani' }}>
-            REDEFINE TECHNOLOGY
-          </div>
+        <div onClick={goHome} style={{ lineHeight: 1, cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <img
+            src={logoImg}
+            alt="DTECH-Engineering Logo"
+            style={{
+              height: '40px',
+              width: 'auto',
+              objectFit: 'contain',
+            }}
+          />
         </div>
 
         {/* Desktop Nav */}

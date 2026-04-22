@@ -1,24 +1,20 @@
 import Hero from '../../sections/Hero'
 import About from '../../sections/About'
 import Products from '../../sections/Products'
-import Services from '../../sections/Services'
-import Innovations from '../../sections/Innovations'
+import GlobalAchievement from '../../sections/GlobalAchievement'
 import Portfolio from '../../sections/Portfolio'
-import Testimonials from '../../sections/Testimonials'
+import Certificate from '../../sections/Certificate'
 import News from '../../sections/News'
-import Contact from '../../sections/Contact'
 
 const HomePage = () => (
   <>
     <Hero />
     <About />
     <Products />
-    <Services />
-    <Innovations />
+    <GlobalAchievement />
     <Portfolio />
-    <Testimonials />
+    <Certificate />
     <News />
-    <Contact />
   </>
 )
 

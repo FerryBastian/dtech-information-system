@@ -26,7 +26,6 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('dtech_token');
       localStorage.removeItem('dtech_user');
-      window.location.href = '/admin/login';
     }
     return Promise.reject(error);
   }

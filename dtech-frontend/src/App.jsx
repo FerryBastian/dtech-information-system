@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/shared/ProtectedRoute';
 import UserLayout from './components/user/UserLayout';
 
 // User pages
@@ -20,11 +19,8 @@ import LegalityPage from './pages/user/LegalityPage';
 import HistoryPage from './pages/user/HistoryPage';
 
 // Admin pages
-import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminAchievements from './pages/admin/AdminAchievements';
-
-const AdminRoute = ({ children }) => <ProtectedRoute>{children}</ProtectedRoute>;
 
 function App() {
   return (
@@ -51,12 +47,9 @@ function App() {
             <Route path="/history" element={<HistoryPage />} />
           </Route>
 
-          {/* Admin Auth */}
-          <Route path="/admin/login" element={<AdminLogin />} />
-
-          {/* Admin Protected */}
-          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-          <Route path="/admin/achievement" element={<AdminRoute><AdminAchievements /></AdminRoute>} />
+          <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/achievement" element={<AdminAchievements />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

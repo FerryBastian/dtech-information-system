@@ -1,70 +1,81 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import toast from 'react-hot-toast';
+import { useState } from 'react'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
-const AdminLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, loading } = useAuth();
-  const navigate = useNavigate();
+function AdminLogin() {
+  const { user, login, loading } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await login(email, password);
-    if (result.success) {
-      toast.success('Login berhasil!');
-      navigate('/admin');
-    } else {
-      toast.error(result.message);
+  if (user) {
+    return <Navigate to="/admin" replace />
+  }
+
+  const from = location.state?.from?.pathname || '/admin'
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+
+    const result = await login(email, password)
+    if (!result.success) {
+      setError(result.message)
+      return
     }
-  };
+
+    navigate(from, { replace: true })
+  }
 
   return (
-    <div className="min-h-screen bg-[#0f1117] flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-xl mb-4">
-            <span className="text-white font-bold text-lg">DT</span>
-          </div>
-          <h1 className="text-white text-2xl font-bold">Dtech Admin</h1>
-          <p className="text-gray-500 text-sm mt-1">Masuk ke panel admin</p>
-        </div>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.18),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_48%,_#020617_100%)] px-4 py-10 text-slate-100">
+      <div className="mx-auto flex min-h-[80vh] max-w-md items-center">
+        <div className="w-full rounded-[32px] border border-slate-800 bg-slate-900/80 p-8 shadow-[0_20px_80px_rgba(15,23,42,0.45)] backdrop-blur">
+          <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">
+            Admin Access
+          </span>
+          <h1 className="mt-4 text-3xl font-bold text-white">Login CMS</h1>
+          <p className="mt-2 text-sm leading-6 text-slate-400">
+            Masuk untuk mengelola dashboard dan data achievement.
+          </p>
 
-        <div className="bg-[#161b27] border border-[#2a3348] rounded-xl p-8">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                Email
-              </label>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-slate-200">Email</span>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@dtech-engineering.com"
+                onChange={(event) => setEmail(event.target.value)}
+                className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                placeholder="admin@dtech.com"
                 required
-                className="w-full bg-[#1e2535] border border-[#2a3348] rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
               />
-            </div>
+            </label>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                Password
-              </label>
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-slate-200">Password</span>
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                onChange={(event) => setPassword(event.target.value)}
+                className="w-full rounded-2xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                placeholder="Masukkan password"
                 required
-                className="w-full bg-[#1e2535] border border-[#2a3348] rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
               />
-            </div>
+            </label>
+
+            {error && (
+              <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors text-sm"
+              className="w-full rounded-2xl bg-cyan-400 px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? 'Memproses...' : 'Masuk'}
             </button>
@@ -72,7 +83,7 @@ const AdminLogin = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminLogin;
+export default AdminLogin

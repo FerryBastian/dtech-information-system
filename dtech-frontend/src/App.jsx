@@ -9,7 +9,8 @@ import HomePage from './pages/user/HomePage';
 import AboutPage from './pages/user/AboutPage';
 import ProductsPage from './pages/user/ProductsPage';
 import ServicesPage from './pages/user/ServicesPage';
-import InnovationsPage from './pages/user/InnovationsPage';
+import AchievementPage from './pages/user/AchievementPage';
+import AchievementDetailPage from './pages/user/AchievementDetailPage';
 import TestimonialPage from './pages/user/TestimonialPage';
 import ContactPage from './pages/user/ContactPage';
 import PortfolioPage from './pages/user/PortfolioPage';
@@ -20,17 +21,8 @@ import HistoryPage from './pages/user/HistoryPage';
 
 // Admin pages
 import AdminLogin from './pages/admin/AdminLogin';
-import Dashboard from './pages/admin/Dashboard';
-import Users from './pages/admin/Users';
-import Products from './pages/admin/Products';
-import Services from './pages/admin/Services';
-import Achievements from './pages/admin/Achievements';
-import Portfolio from './pages/admin/Portfolio';
-import Certificates from './pages/admin/Certificates';
-import Testimoni from './pages/admin/Testimoni';
-import Team from './pages/admin/Team';
-import News from './pages/admin/News';
-import Contact from './pages/admin/Contact';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminAchievements from './pages/admin/AdminAchievements';
 
 const AdminRoute = ({ children }) => <ProtectedRoute>{children}</ProtectedRoute>;
 
@@ -48,7 +40,8 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/services" element={<ServicesPage />} />
-            <Route path="/innovations" element={<InnovationsPage />} />
+            <Route path="/achievement" element={<AchievementPage />} />
+            <Route path="/achievement/:id" element={<AchievementDetailPage />} />
             <Route path="/testimonial" element={<TestimonialPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
@@ -62,17 +55,8 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
 
           {/* Admin Protected */}
-          <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
-          <Route path="/admin/users" element={<AdminRoute><Users /></AdminRoute>} />
-          <Route path="/admin/products" element={<AdminRoute><Products /></AdminRoute>} />
-          <Route path="/admin/services" element={<AdminRoute><Services /></AdminRoute>} />
-          <Route path="/admin/achievements" element={<AdminRoute><Achievements /></AdminRoute>} />
-          <Route path="/admin/portfolio" element={<AdminRoute><Portfolio /></AdminRoute>} />
-          <Route path="/admin/certificates" element={<AdminRoute><Certificates /></AdminRoute>} />
-          <Route path="/admin/testimoni" element={<AdminRoute><Testimoni /></AdminRoute>} />
-          <Route path="/admin/team" element={<AdminRoute><Team /></AdminRoute>} />
-          <Route path="/admin/news" element={<AdminRoute><News /></AdminRoute>} />
-          <Route path="/admin/contact" element={<AdminRoute><Contact /></AdminRoute>} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/achievement" element={<AdminRoute><AdminAchievements /></AdminRoute>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

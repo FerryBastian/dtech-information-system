@@ -1,85 +1,78 @@
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import {
-  MdDashboard, MdInventory, MdMiscellaneousServices, MdEmojiEvents,
-  MdPhotoLibrary, MdVerified, MdSecurity, MdPeople, MdNewspaper,
-  MdEmail, MdLogout, MdMenu, MdClose, MdChevronRight
-} from 'react-icons/md';
-import { FaQuoteLeft } from 'react-icons/fa';
+import { Link, NavLink } from 'react-router-dom'
 
-const menus = [
-  { label: 'Dashboard', path: '/admin', icon: MdDashboard, exact: true },
-  { label: 'Users', path: '/admin/users', icon: MdSecurity },
-  { label: 'Products', path: '/admin/products', icon: MdInventory },
-  { label: 'Services', path: '/admin/services', icon: MdMiscellaneousServices },
-  { label: 'Achievements', path: '/admin/achievements', icon: MdEmojiEvents },
-  { label: 'Portfolio', path: '/admin/portfolio', icon: MdPhotoLibrary },
-  { label: 'Certificates', path: '/admin/certificates', icon: MdVerified },
-  { label: 'Testimoni', path: '/admin/testimoni', icon: FaQuoteLeft },
-  { label: 'Team', path: '/admin/team', icon: MdPeople },
-  { label: 'News', path: '/admin/news', icon: MdNewspaper },
-  { label: 'Contact', path: '/admin/contact', icon: MdEmail },
-];
+const panelClassName =
+  'rounded-[28px] border border-slate-800 bg-slate-900/80 shadow-[0_20px_80px_rgba(15,23,42,0.45)] backdrop-blur'
 
-const AdminLayout = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+const adminMenus = [
+  { label: 'Dashboard', path: '/admin', disabled: false },
+  { label: 'Achievement', path: '/admin/achievement', disabled: false },
+  { label: 'Products', path: '/admin/products', disabled: true },
+  { label: 'Services', path: '/admin/services', disabled: true },
+  { label: 'Testimonials', path: '/admin/testimonials', disabled: true },
+  { label: 'Contact', path: '/admin/contact', disabled: true },
+]
 
-  const handleLogout = () => { logout(); navigate('/admin/login'); };
-
+function AdminLayout({ children }) {
   return (
-    <div className="min-h-screen bg-[#0f1117] flex">
-      {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-60' : 'w-16'} transition-all duration-300 bg-[#161b27] border-r border-[#2a3348] flex flex-col flex-shrink-0`}>
-        <div className="flex items-center justify-between p-4 border-b border-[#2a3348]">
-          {sidebarOpen && (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">DT</div>
-              <span className="text-white font-bold text-sm">Dtech Admin</span>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.18),_transparent_32%),linear-gradient(180deg,_#020617_0%,_#0f172a_48%,_#020617_100%)] text-slate-100">
+      <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:px-8">
+        <div className="grid gap-6 xl:grid-cols-[280px_minmax(0,1fr)]">
+          <aside className={`${panelClassName} h-fit p-5 sm:p-6 xl:sticky xl:top-6`}>
+            <div className="rounded-[28px] border border-cyan-500/20 bg-slate-950/80 p-5">
+              <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-cyan-300">
+                Admin Dashboard
+              </span>
+              <h1 className="mt-4 text-2xl font-bold tracking-tight text-white">DTECH CMS</h1>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Pusat pengelolaan konten website. Modul lain nanti bisa langsung ditambahkan dari sidebar ini.
+              </p>
             </div>
-          )}
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-400 hover:text-white p-1 rounded">
-            {sidebarOpen ? <MdClose size={18} /> : <MdMenu size={18} />}
-          </button>
+
+            <nav className="mt-6 space-y-2">
+              {adminMenus.map((menu) =>
+                menu.disabled ? (
+                  <div
+                    key={menu.label}
+                    className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/50 px-4 py-3 text-sm text-slate-500"
+                  >
+                    <span>{menu.label}</span>
+                    <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] uppercase tracking-[0.2em]">
+                      Soon
+                    </span>
+                  </div>
+                ) : (
+                  <NavLink
+                    key={menu.label}
+                    to={menu.path}
+                    end={menu.path === '/admin'}
+                    className={({ isActive }) =>
+                      `flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-medium transition ${
+                        isActive
+                          ? 'border-cyan-400/40 bg-cyan-400/10 text-cyan-200'
+                          : 'border-slate-800 bg-slate-950/50 text-slate-300 hover:border-cyan-400/30 hover:text-white'
+                      }`
+                    }
+                  >
+                    <span>{menu.label}</span>
+                    <span className="text-xs uppercase tracking-[0.2em]">Go</span>
+                  </NavLink>
+                )
+              )}
+            </nav>
+
+            <Link
+              to="/achievement"
+              className="mt-6 flex items-center justify-center rounded-2xl border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:border-cyan-400 hover:bg-cyan-400/10"
+            >
+              Lihat Halaman Public
+            </Link>
+          </aside>
+
+          <main className="min-w-0">{children}</main>
         </div>
-
-        <nav className="flex-1 py-4 overflow-y-auto">
-          {menus.map(({ label, path, icon: Icon, exact }) => (
-            <NavLink key={path} to={path} end={exact}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-sm transition-colors mb-0.5 ${
-                  isActive ? 'bg-blue-600/20 text-blue-400 border border-blue-600/30' : 'text-gray-400 hover:text-white hover:bg-[#1e2535]'
-                }`
-              }>
-              <Icon size={18} className="flex-shrink-0" />
-              {sidebarOpen && <span>{label}</span>}
-            </NavLink>
-          ))}
-        </nav>
-
-        <div className="p-4 border-t border-[#2a3348]">
-          {sidebarOpen && (
-            <div className="mb-3">
-              <p className="text-white text-xs font-semibold truncate">{user?.username}</p>
-              <p className="text-gray-500 text-xs truncate">{user?.email}</p>
-            </div>
-          )}
-          <button onClick={handleLogout}
-            className="flex items-center gap-2 text-red-400 hover:text-red-300 text-xs w-full px-2 py-1.5 rounded hover:bg-red-600/10 transition-colors">
-            <MdLogout size={16} />
-            {sidebarOpen && 'Logout'}
-          </button>
-        </div>
-      </aside>
-
-      {/* Main content */}
-      <main className="flex-1 overflow-auto">
-        {children}
-      </main>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminLayout;
+export default AdminLayout

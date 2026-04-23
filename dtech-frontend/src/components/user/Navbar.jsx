@@ -8,7 +8,7 @@ const navItems = [
     dropdown: [
       { label: 'History', path: '/history' },
       { label: 'Corporate Profile', path: '/about' },
-      { label: 'Global Achievement', path: '/achievements' },
+      { label: 'Global Achievement', path: '/achievement' },
       { label: 'Portfolio', path: '/portfolio' },
       { label: 'Patents', path: '/certificates' },
       { label: 'Legality Certificate', path: '/legality' },
@@ -31,7 +31,7 @@ const navItems = [
       { label: 'Prototyping Service', path: '/services' },
     ]
   },
-  { label: 'Innovations', path: '/innovations' },
+  { label: 'Achievement', path: '/achievement' },
   { label: 'Testimonial', path: '/testimonial' },
   { label: 'Contact', path: '/contact' },
 ]

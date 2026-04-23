@@ -1,5 +1,9 @@
 const db = require('../config/db');
 
+const isMissingColumnError = (error, columnName) =>
+  error?.code === 'ER_BAD_FIELD_ERROR' &&
+  error?.sqlMessage?.includes(`'${columnName}'`);
+
 const parseTechnologies = (value) => {
   if (!value) return [];
   if (Array.isArray(value)) return value;
@@ -21,6 +25,32 @@ exports.getAllAchievements = () => {
     `;
     db.query(query, (err, results) => {
       if (err) {
+        if (isMissingColumnError(err, 'deleted_at')) {
+          const fallbackQuery = `
+            SELECT * FROM achievements
+            ORDER BY created_at DESC
+          `;
+
+          return db.query(fallbackQuery, (fallbackErr, fallbackResults) => {
+            if (fallbackErr) {
+              if (isMissingColumnError(fallbackErr, 'created_at')) {
+                return db.query('SELECT * FROM achievements ORDER BY id DESC', (lastErr, lastResults) => {
+                  if (lastErr) {
+                    console.error(lastErr);
+                    return reject({ status: 500, message: 'Error ambil data' });
+                  }
+                  resolve(lastResults);
+                });
+              }
+
+              console.error(fallbackErr);
+              return reject({ status: 500, message: 'Error ambil data' });
+            }
+
+            resolve(fallbackResults);
+          });
+        }
+
         console.error(err);
         return reject({ status: 500, message: 'Error ambil data' });
       }
@@ -260,7 +290,17 @@ exports.softDeleteAchievement = (id) => {
       WHERE id = ? AND deleted_at IS NULL
     `;
     db.query(query, [id], (err, result) => {
-      if (err) return reject({ status: 500, message: 'Error saat delete data' });
+      if (err) {
+        if (isMissingColumnError(err, 'deleted_at')) {
+          return db.query('DELETE FROM achievements WHERE id = ?', [id], (deleteErr, deleteResult) => {
+            if (deleteErr) return reject({ status: 500, message: 'Error saat delete data' });
+            if (deleteResult.affectedRows === 0) return reject({ status: 404, message: 'Data tidak ditemukan' });
+            resolve();
+          });
+        }
+
+        return reject({ status: 500, message: 'Error saat delete data' });
+      }
       if (result.affectedRows === 0) return reject({ status: 404, message: 'Data tidak ditemukan atau sudah dihapus' });
       resolve();
     });
@@ -270,7 +310,12 @@ exports.softDeleteAchievement = (id) => {
 exports.restoreAchievement = (id) => {
   return new Promise((resolve, reject) => {
     db.query('UPDATE achievements SET deleted_at = NULL WHERE id = ?', [id], (err, result) => {
-      if (err) return reject({ status: 500, message: err.message });
+      if (err) {
+        if (isMissingColumnError(err, 'deleted_at')) {
+          return reject({ status: 400, message: 'Restore tidak tersedia karena kolom deleted_at belum ada di database.' });
+        }
+        return reject({ status: 500, message: err.message });
+      }
       if (result.affectedRows === 0) return reject({ status: 404, message: 'Data tidak ditemukan' });
       resolve();
     });

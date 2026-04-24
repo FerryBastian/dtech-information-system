@@ -21,6 +21,7 @@ import HistoryPage from './pages/user/HistoryPage';
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminAchievements from './pages/admin/AdminAchievements';
+import AdminCertificates from './pages/admin/AdminCertificates';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/achievement" element={<AdminAchievements />} />
+          <Route path="/admin/certificates" element={<AdminCertificates />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

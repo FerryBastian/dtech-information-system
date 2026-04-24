@@ -8,14 +8,20 @@ const panelClassName =
 
 function AdminDashboardPage() {
   const [achievementCount, setAchievementCount] = useState(0)
+  const [certificateCount, setCertificateCount] = useState(0)
 
   useEffect(() => {
     const loadSummary = async () => {
       try {
-        const response = await api.get('/achievements')
-        setAchievementCount(response.data.length)
+        const [achievementResponse, certificateResponse] = await Promise.all([
+          api.get('/achievements'),
+          api.get('/certificates', { params: { includeInactive: true } }),
+        ])
+        setAchievementCount(achievementResponse.data.length)
+        setCertificateCount(certificateResponse.data.length)
       } catch {
         setAchievementCount(0)
+        setCertificateCount(0)
       }
     }
 
@@ -38,9 +44,9 @@ function AdminDashboardPage() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className={panelClassName}>
             <p className="text-sm text-slate-400">Modul Aktif</p>
-            <p className="mt-2 text-2xl font-bold text-white">Achievement</p>
+            <p className="mt-2 text-2xl font-bold text-white">Achievement + Certificate</p>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              Modul CRUD pertama yang sudah aktif penuh di dashboard admin.
+              Dua modul CRUD sudah aktif penuh di dashboard admin.
             </p>
           </div>
           <div className={panelClassName}>
@@ -51,10 +57,10 @@ function AdminDashboardPage() {
             </p>
           </div>
           <div className={panelClassName}>
-            <p className="text-sm text-slate-400">Struktur Admin</p>
-            <p className="mt-2 text-2xl font-bold text-white">Sidebar Ready</p>
+            <p className="text-sm text-slate-400">Total Certificate</p>
+            <p className="mt-2 text-2xl font-bold text-white">{certificateCount} Item</p>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              Products, services, testimonial, dan contact tinggal disambungkan ke page masing-masing.
+              Jumlah certificate yang sekarang tersedia untuk halaman patents.
             </p>
           </div>
         </div>
@@ -71,6 +77,21 @@ function AdminDashboardPage() {
             className="inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-300"
           >
             Buka Modul Achievement
+          </Link>
+        </div>
+
+        <div className={`${panelClassName} flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between`}>
+          <div>
+            <h3 className="text-2xl font-semibold text-white">Kelola Certificate</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Masuk ke modul certificate untuk upload gambar, atur urutan tampil, dan sembunyikan item yang tidak aktif.
+            </p>
+          </div>
+          <Link
+            to="/admin/certificates"
+            className="inline-flex items-center justify-center rounded-2xl bg-cyan-400 px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-300"
+          >
+            Buka Modul Certificate
           </Link>
         </div>
       </div>

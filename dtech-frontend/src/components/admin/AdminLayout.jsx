@@ -6,6 +6,7 @@ const panelClassName =
 const adminMenus = [
   { label: 'Dashboard', path: '/admin', disabled: false },
   { label: 'Achievement', path: '/admin/achievement', disabled: false },
+  { label: 'Certificate', path: '/admin/certificates', disabled: false },
   { label: 'Products', path: '/admin/products', disabled: true },
   { label: 'Services', path: '/admin/services', disabled: true },
   { label: 'Testimonials', path: '/admin/testimonials', disabled: true },

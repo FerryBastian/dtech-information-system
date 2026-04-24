@@ -17,6 +17,7 @@ import PortfolioDetailPage from './pages/user/PortfolioDetailPage';
 import CertificatePage from './pages/user/CertificatePage';
 import LegalityPage from './pages/user/LegalityPage';
 import HistoryPage from './pages/user/HistoryPage';
+import NewsDetailPage from './pages/user/NewsDetailPage';
 
 // Admin pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -45,6 +46,7 @@ function App() {
             <Route path="/certificates" element={<CertificatePage />} />
             <Route path="/legality" element={<LegalityPage />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route path="/news/:id" element={<NewsDetailPage />} />
           </Route>
 
           <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
